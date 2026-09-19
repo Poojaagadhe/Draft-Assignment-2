@@ -1,0 +1,22 @@
+# Environment variables
+.env
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# State & database files (can be kept or ignored, state dir structure is tracked)
+state/checkpoints.db
+state/checkpoints.db-journal
+state/checkpoints.db-wal
+state/checkpoints.db-shm
+
+# Virtual environment
+venv/
+.venv/
+env/

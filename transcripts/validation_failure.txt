@@ -1,0 +1,45 @@
+================================================================================
+DEMONSTRATION RUN: DELIBERATE CORRUPTION & VALIDATION FAILURE CATCH
+================================================================================
+
+--- STEP 1: INJECT CORRUPTED RESULT INTO ITEM 3 ---
+$ python main.py --mock --corrupt item3
+
+[Corruption] Successfully injected bad result into item3.
+[Corruption] Injected text: "This item is about cooking recipes and has nothing to do with the requested technical concept."
+
+
+
+--- STEP 2: RUN VALIDATION TO DETECT CORRUPTED RESULT ---
+$ python main.py --mock --validate
+
+============================================================
+RUNNING FINAL VALIDATION ON PERSISTED RESULTS
+============================================================
+
+FINAL VALIDATION
+
+item1 — Redis Caching
+PASS
+
+item2 — Database Indexing
+PASS
+
+item3 — Message Queues
+FAIL
+Reason: The stored result discusses unrelated topics (cooking/recipes) instead of Message Queues.
+
+item4 — Horizontal Scaling
+PASS
+
+item5 — Load Balancing
+PASS
+
+Overall validation: FAILED
+
+============================================================
+Total LLM calls: 7
+============================================================
+
+
+
