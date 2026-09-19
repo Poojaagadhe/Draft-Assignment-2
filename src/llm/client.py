@@ -174,6 +174,69 @@ class TrackedLLM:
         self.call_count = 0
 
 
+class GeminiChatModel(BaseChatModel):
+    """
+    Robust Gemini Chat Model implementation using google.generativeai gRPC transport.
+    Guarantees connectivity across environments where HTTP REST DNS resolution is restricted,
+    with automatic exponential backoff retry on 429 rate limits.
+    """
+    model_name: str = "gemini-flash-latest"
+    api_key: str = ""
+    temperature: float = 0.0
+
+    def _generate(
+        self,
+        messages: List[BaseMessage],
+        stop: Optional[List[str]] = None,
+        run_manager: Any = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        import time
+        import google.generativeai as genai
+        from google.api_core.exceptions import ResourceExhausted
+        
+        genai.configure(api_key=self.api_key)
+        model = genai.GenerativeModel(self.model_name)
+        
+        prompt_parts = []
+        for m in messages:
+            if isinstance(m, SystemMessage):
+                prompt_parts.append(f"System Instructions:\n{m.content}")
+            elif isinstance(m, HumanMessage):
+                prompt_parts.append(f"User Request:\n{m.content}")
+            else:
+                prompt_parts.append(str(m.content))
+                
+        full_prompt = "\n\n".join(prompt_parts)
+        
+        # Retry with backoff for rate limits
+        max_retries = 3
+        delay = 5.0
+        for attempt in range(max_retries):
+            try:
+                response = model.generate_content(
+                    full_prompt,
+                    generation_config={"temperature": self.temperature}
+                )
+                content = response.text if hasattr(response, "text") else str(response)
+                generation = ChatGeneration(message=AIMessage(content=content))
+                return ChatResult(generations=[generation])
+            except ResourceExhausted as e:
+                if attempt < max_retries - 1:
+                    print(f"\n[Rate Limit] Gemini quota limit reached (429). Waiting {delay:.0f}s before retry...")
+                    time.sleep(delay)
+                    delay *= 2
+                else:
+                    print(f"\n[Rate Limit] Rate limit persisted after {max_retries} attempts.")
+                    raise e
+            except Exception as e:
+                raise e
+
+    @property
+    def _llm_type(self) -> str:
+        return "gemini_grpc_chat_model"
+
+
 def get_llm(
     model_name: Optional[str] = None,
     use_mock: bool = False,
@@ -194,14 +257,13 @@ def get_llm(
     openai_key = os.getenv("OPENAI_API_KEY")
 
     if google_key:
-        from langchain_google_genai import ChatGoogleGenerativeAI
         selected_model = model_name or os.getenv("MODEL_NAME", "gemini-flash-latest")
-        model = ChatGoogleGenerativeAI(
-            model=selected_model,
-            google_api_key=google_key,
-            temperature=temperature,
+        gemini_model = GeminiChatModel(
+            model_name=selected_model,
+            api_key=google_key,
+            temperature=temperature
         )
-        return TrackedLLM(model, initial_call_count=initial_call_count)
+        return TrackedLLM(gemini_model, initial_call_count=initial_call_count)
 
     if openai_key:
         from langchain_openai import ChatOpenAI
