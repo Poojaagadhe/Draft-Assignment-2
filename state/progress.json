@@ -1,6 +1,6 @@
 {
-  "run_id": "test-resume-flow",
-  "updated_at": "2026-09-19T13:52:34.942934+00:00",
+  "run_id": "assignment2-demo",
+  "updated_at": "2026-09-19T14:14:32.903171+00:00",
   "total_llm_calls": 6,
   "last_completed_item": "item5",
   "validation_complete": true,
@@ -10,35 +10,35 @@
       "status": "completed",
       "result": "Redis caching is an in-memory key-value data store used as a high-speed caching layer. It is used to dramatically reduce database read latency, offload repetitive queries, and handle high-throughput read traffic by serving hot data directly from RAM. For example, an e-commerce platform caches frequently accessed product catalog pages and user sessions in Redis. One important tradeoff is volatility and memory cost: RAM is significantly more expensive than persistent disk storage, and cache invalidation strategies (such as TTL or write-through) must be carefully engineered to prevent serving stale data.",
       "llm_calls": 1,
-      "completed_at": "2026-09-19T13:52:34.913595+00:00"
+      "completed_at": "2026-09-19T14:13:59.365411+00:00"
     },
     "item2": {
       "topic": "Database Indexing",
       "status": "completed",
       "result": "Database indexing is a data structure technique (typically utilizing B-Trees or Hash tables) that optimizes the speed of data retrieval operations on database tables. It is used to prevent costly full-table scans by allowing the query engine to locate target rows in logarithmic time. For example, creating a composite index on (user_id, created_at) enables instantaneous retrieval of a user's recent orders. One important tradeoff is write overhead and storage consumption: every insert, update, and delete operation must update both the underlying table and all associated indexes, increasing write latency and storage requirements.",
       "llm_calls": 1,
-      "completed_at": "2026-09-19T13:52:34.916596+00:00"
+      "completed_at": "2026-09-19T14:14:03.101317+00:00"
     },
     "item3": {
       "topic": "Message Queues",
       "status": "completed",
-      "result": "Message queues are asynchronous communication mechanisms (such as RabbitMQ or Apache Kafka) that decouple producers and consumers via ordered message buffers. They are used to facilitate asynchronous processing, smooth out traffic spikes (load leveling), and increase overall system resilience. For example, a payment gateway places video encoding or receipt generation tasks into a queue for background worker consumption. One important tradeoff is operational complexity: introducing message queues adds challenges such as handling duplicate messages, guaranteeing delivery semantics, and managing dead-letter queues.",
+      "result": "This item is about cooking recipes and has nothing to do with the requested technical concept.",
       "llm_calls": 1,
-      "completed_at": "2026-09-19T13:52:34.918596+00:00"
+      "completed_at": "2026-09-19T14:14:06.845037+00:00"
     },
     "item4": {
       "topic": "Horizontal Scaling",
       "status": "completed",
       "result": "Horizontal scaling (scaling out) is the practice of expanding system capacity by adding more compute instances or nodes to a distributed cluster rather than upgrading a single machine. It is used to achieve virtually limitless scalability, improve fault tolerance, and avoid single-point-of-failure bottlenecks. For example, a web application provisions 20 stateless container instances behind an auto-scaler during high-traffic events. One important tradeoff is distributed system complexity: applications must be designed to be stateless, requiring centralized session stores, distributed tracing, and coordination protocols across multiple nodes.",
       "llm_calls": 1,
-      "completed_at": "2026-09-19T13:52:34.936931+00:00"
+      "completed_at": "2026-09-19T14:14:24.634540+00:00"
     },
     "item5": {
       "topic": "Load Balancing",
       "status": "completed",
       "result": "Load balancing is the technique of distributing incoming network traffic across multiple backend servers or resource pools. It is used to maximize throughput, minimize response latency, prevent any single server from becoming overloaded, and provide seamless failover. For example, an NGINX or AWS ALB instance distributes HTTPS user requests across a pool of application servers using round-robin or least-connections routing. One important tradeoff is the load balancer itself can become a single point of failure or network bottleneck unless configured with redundant, active-passive or multi-region high-availability pairs.",
       "llm_calls": 1,
-      "completed_at": "2026-09-19T13:52:34.938935+00:00"
+      "completed_at": "2026-09-19T14:14:28.588915+00:00"
     }
   },
   "validation_results": {
